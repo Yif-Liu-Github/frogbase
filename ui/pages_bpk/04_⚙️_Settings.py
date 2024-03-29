@@ -1,22 +1,22 @@
 import streamlit as st
 from config import DEV, get_page_config, init_session
 
-# Set up page config & init session
+# 设置页面配置并初始化会话
 st.set_page_config(**get_page_config())
 init_session(st.session_state)
-# Render session state if in dev mode
+# 如果在开发模式下，则渲染会话状态
 if DEV:
-    with st.expander("Session state"):
+    with st.expander("会话状态"):
         st.write(st.session_state)
 
-# Aliases for readability
+# 别名以提高可读性
 # --------------------------------
 fb = st.session_state.fb
 
-# Whisper config
+# Whisper 配置
 # --------------------------------
 st.write("#### 🗣️✍️ OpenAI Whisper")
-with st.expander("# ⚙️ Settings", expanded=False), st.form("whisper_config"):
+with st.expander("# ⚙️ 设置", expanded=False), st.form("whisper_config"):
     model_options = ["tiny", "base", "small", "medium", "large", "tiny.en", "base.en", "small.en", "medium.en"]
     selected_model = model_options.index(fb.models.whisper.model)
     whisper_model = st.selectbox("Model", options=model_options, index=selected_model)
@@ -154,7 +154,7 @@ with st.expander("# ⚙️ Settings", expanded=False), st.form("whisper_config")
     ]
     language = st.selectbox("Language", options=lang_options, index=lang_options.index(fb.models.whisper.language))
 
-    save_config = st.form_submit_button(label="💾 Save")
+    save_config = st.form_submit_button(label="💾 保存")
     success_container = st.empty()
 
     if save_config:
@@ -169,4 +169,4 @@ with st.expander("# ⚙️ Settings", expanded=False), st.form("whisper_config")
         fb.models.whisper.task = task
         fb.models.whisper.language = language
         fb.models.save_settings()
-        success_container.success("Settings saved!")
+        success_container.success("设置保存成功！")

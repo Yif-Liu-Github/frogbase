@@ -5,78 +5,78 @@ import streamlit as st
 from config import DATADIR, DEV, get_page_config, init_session
 from tinydb import Query, TinyDB
 
-# Set up page config & init session
+# 设置页面配置并初始化会话
 st.set_page_config(**get_page_config())
 init_session(st.session_state)
 
-# Render session state if in dev mode
+# 如果在开发模式下，则渲染会话状态
 if DEV:
     with st.sidebar.expander("Session state"):
         st.write(st.session_state)
 
-st.write("## 📚 &nbsp; Libraries")
+st.write("## 📚 &nbsp; 库")
 st.write("---")
 
-# Library creation & selection widget
+# 创建和选择库的部件
 # -----------------------------------
-# Create a form to add a new library
+# 创建一个表单来添加新的库
 with st.sidebar.form("create_library"):
-    new_library = st.text_input("Create new library", help="Enter a new library name")
-    add_library = st.form_submit_button(label="➕ Create")
+    new_library = st.text_input("创建新的库", help="输入新的库名称")
+    add_library = st.form_submit_button(label="➕ 创建")
     success_container = st.empty()
 
-# If the form was submitted, create a new library
+# 如果表单被提交，则创建一个新的库
 if add_library:
     if new_library:
-        # Update session state
+        # 更新会话状态
         init_session(st.session_state, library=new_library, reset=True)
         st.experimental_rerun()
     else:
-        success_container.error("Please enter a library name")
+        success_container.error("请输入库名称")
 
 existing_libraries = [p.name for p in Path(DATADIR).iterdir() if p.is_dir()]
 selected_library = st.sidebar.selectbox(
-    "📚 Select Library", options=existing_libraries, index=existing_libraries.index(st.session_state.library)
+    "📚 选择库", options=existing_libraries, index=existing_libraries.index(st.session_state.library)
 )
 if selected_library != st.session_state.library:
-    # Update session state
+    # 更新会话状态
     init_session(st.session_state, library=selected_library, reset=True)
     st.experimental_rerun()
 
 
-# Find all tinydb.json files in the datadir and display them as libraries
+# 找到datadir中所有的tinydb.json文件，并将其显示为库
 dbs = list(Path(DATADIR).glob("**/tinydb*.json"))
 if len(dbs) == 1:
-    st.info("🐸 &nbsp; Deleting the only remaining library will reset the app & recreate the default library")
+    st.info("🐸 &nbsp; 删除唯一剩下的库将重置应用并重新创建默认库")
 
-# Sort dbs by creation dat
+# 按创建日期排序dbs
 dbs = sorted(dbs, key=lambda x: x.stat().st_ctime, reverse=True)
 for dbpath in dbs:
     libname = dbpath.parent.name
     db = TinyDB(dbpath)
-    # Render library name & selected status
+    # 渲染库名称和选定状态
     st.write(f"#### `{libname}`")
 
     st.markdown(
         f"""
-    <b>Path: `{dbpath.parent}`</b><br>
-    <b>Media: `{len(db.table('Media'))}`</b>; &nbsp;
-    <b>Captions: `{len(db.table('Captions'))}`</b>
+    <b>路径: `{dbpath.parent}`</b><br>
+    <b>媒体: `{len(db.table('Media'))}`</b>; &nbsp;
+    <b>字幕: `{len(db.table('Captions'))}`</b>
     """,
         unsafe_allow_html=True,
     )
 
-    # Button to select library. Render as disabled if already selected
+    # 按钮来选择库。如果已经选择，则呈现为禁用状态
     if libname == st.session_state.library:
-        st.button("📌 &nbsp; Selected", disabled=True)
+        st.button("📌 &nbsp; 已选定", disabled=True)
     else:
-        # Button to select library
-        if st.button("📌 &nbsp; Select", key=libname + "select"):
+        # 按钮来选择库
+        if st.button("📌 &nbsp; 选择", key=libname + "select"):
             init_session(st.session_state, library=libname, reset=True)
             st.experimental_rerun()
 
-    # Button to delete library
-    if st.button("🗑️ &nbsp; Delete", key=libname + "delete"):
+    # 按钮来删除库
+    if st.button("🗑️ &nbsp; 删除", key=libname + "delete"):
         shutil.rmtree(dbpath.parent)
         init_session(st.session_state, reset=True)
         st.experimental_rerun()

@@ -18,7 +18,7 @@ def test_frogbase_creation_defaults():
     # Check defaults
     fb = FrogBase(persist=False, dev=True)
     assert fb._datadir.exists()
-    assert fb._datadir.name == "frogverse"
+    assert fb._datadir.name == "default"
     assert fb._library == "main"
     assert fb._libdir.exists()
     assert fb._libdir.name == "main"

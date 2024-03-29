@@ -30,7 +30,7 @@ class FrogBase:
     def __init__(
         self,
         datadir: str = "./data",
-        library: str = "frogverse",
+        library: str = "default",
         persist: bool = True,
         verbose: bool = False,
         dev: bool = False,
@@ -39,7 +39,7 @@ class FrogBase:
 
         Args:
             datadir: Houses all data for a FrogBase instance. Defaults to "./data".
-            library: The name of the library to use. Defaults to "frogverse".
+            library: The name of the library to use. Defaults to "default".
             persist: Whether to persist the data to disk. Defaults to True.
                 Warning: If set to False, all data is stored in a temporary directory
                 that is deleted when the instance is destroyed. Use this only if

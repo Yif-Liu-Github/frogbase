@@ -91,6 +91,11 @@ openai = "^0.27.8"
 [tool.poetry.scripts]
 frogbase = "frogbase.__main__:ui"
 
+[[tool.poetry.source]]
+name = "mirrors"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+priority = "primary"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"

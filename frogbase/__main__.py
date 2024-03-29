@@ -16,7 +16,7 @@ def main() -> None:
     # Add a positional/required argument
     parser.add_argument("command", type=str, help="Command to run.")
     parser.add_argument("--datadir", type=str, default="./local/data", help="Path to the output directory.")
-    parser.add_argument("--library", type=str, default="frogverse", help="Name of the library to use.")
+    parser.add_argument("--library", type=str, default="default", help="Name of the library to use.")
     parser.add_argument("--persist", action="store_true", help="Enable persistent storage.")
     parser.add_argument("--verbose", action="store_true", help="Enable verbose logging.")
     parser.add_argument("--dev", action="store_true", help="Enable development mode.")
