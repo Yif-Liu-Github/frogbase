@@ -43,6 +43,7 @@ torch = ">=2.0.0, !=2.0.1"
 openai-whisper = "^20230314"
 sentence-transformers = "^2.2.2"
 hnswlib = "^0.7.0"
+openai = "^0.27.8"
 
 [tool.poetry.group.dev]
 optional = true
@@ -86,7 +87,7 @@ optional = true
 [tool.poetry.group.ui.dependencies]
 streamlit = "^1.23.1"
 python-dotenv = "^1.0.0"
-openai = "^0.27.8"
+
 
 [tool.poetry.scripts]
 frogbase = "frogbase.__main__:ui"
